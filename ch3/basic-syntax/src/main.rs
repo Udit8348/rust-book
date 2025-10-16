@@ -2,11 +2,32 @@
  * Basic syntax rules of rust.
  * Code playground if needed.
  * Rust wants to guarantee memory safety and avoid undefined behavior.
+ * todo: cleanup organization and fmt
  */
 use std::hint::black_box;
 
 // const can be declared in any scope and  differs from mut since it only allows rhs to be other consts (cannot be computed at runtime) 
 const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
+
+
+// functions can have arguments, but we must provide the type since rust will not infer them
+// when we do not place a semicolon at the end of a function it becomes an expression "evaluate to a resultant value"
+// you must specify the return type of a function, otherwise will default to ()
+fn something (thing: u8) -> u8 {
+    let _y = thing; // this is a statements are "instructions to perform some action and never return a value"
+    // let x = y = z = 5; does not work in rust as it would in c for example where assignments are also expressions
+    _y + 1
+}
+
+// in addition to calling functions or macros, new scope blocks are all expressions
+fn expression_basic () {
+    let _z = {
+        let _x = 3;
+        _x + 1
+    }; // notice semicolon here since it is completing the let _z ... statement
+
+    println!("the value of z is {_z}"); // 4
+}
 
 fn main() {
     let x = 6;
@@ -25,6 +46,43 @@ fn main() {
     let character : char = 'u'; // can be unicode and must be wrapped in single quotes
 
     println!("integer: {integer} boolean: {truth} float: {float} character: {character}");
+
+    let _tup: (i32, f64, u8) = (500, 6.4, 1);
+    let (_x,_y,_z) = _tup;
+
+    // use pattern matching to destructure a tuple value
+    println!("the value of y is: {_y}");
+
+    // we can also index into a tuple using a dot operator
+    let _five_hundred = _tup.0;
+    let _six_point_four = _tup.1;
+
+
+    // arrays are stack allocated
+    let calendar : [&str; 12] = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sept", "oct", "nov", "dec"];
+
+    // you can be more expressive of the array's type and size
+    let _a : [i32; 5] = [1,2,3,4,5];
+
+    // initialize whole array to one value
+    let _b = [-1;5];
+    let _b = [-1, -1, -1, -1, -1];
+
+    // we can index as expected
+    // rust always inserts bounds checks in the runtime code
+    // the compiler might optimize them out if it can *prove* that the accesses will all be in-bounds
+    // failing the runtime assertion will cause a panic (ie: no ub or mem safety issues)
+    
+    //println!("the month is {calendar[9]}"); // we cannot evaluate expressions inside of fmt strings
+    println!("the month is {}", calendar[9]);
+
+
+    let udit = something(9);
+
+    println!("hullo udit: {udit}");
+    
+    expression_basic();
+    
 }
 
 /*
