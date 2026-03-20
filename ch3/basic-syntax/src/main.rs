@@ -1,21 +1,18 @@
-/**
- * Basic syntax rules of rust.
- * Code playground if needed.
- * Rust wants to guarantee memory safety and avoid undefined behavior.
- * todo: cleanup organization and fmt
- */
 use std::hint::black_box;
 
-// const can be declared in any scope and  differs from mut since it only allows rhs to be other consts (cannot be computed at runtime) 
+// const: compile-time value; RHS must be a const expression
+// convention: ALL_CAPS
 const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
 
+// Function params always have explicit types.
+// The last expression (no `;`) becomes the return value.
+// Hint: Rust is an expression-oriented language.
+// Return type must be written unless it's `()`.
+fn expression_return_example(input: u8) -> u8 {
+    let _y = input; // let creates a statement
 
-// functions can have arguments, but we must provide the type since rust will not infer them
-// when we do not place a semicolon at the end of a function it becomes an expression "evaluate to a resultant value"
-// you must specify the return type of a function, otherwise will default to ()
-fn something (thing: u8) -> u8 {
-    let _y = thing; // this is a statements are "instructions to perform some action and never return a value"
-    // let x = y = z = 5; does not work in rust as it would in c for example where assignments are also expressions
+    /* let x = y = z = 5; */  // statements don't evaluate to a value, so this doesn't work
+
     _y + 1
 }
 
@@ -29,16 +26,19 @@ fn expression_basic () {
     println!("the value of z is {_z}"); // 4
 }
 
-fn main() {
+fn immutability_basic() {
     let x = 6;
     println!("the value of x is {x}");
     
     // x = 5;
     // println!("not permitted by the rust compiler because variables are immutable by default");
+}
 
+fn const_basic() {
     println!("the number of seconds in three hours is: {THREE_HOURS_IN_SECONDS}");
+}
 
-
+fn scalar_types_basic() {
     // there are scalar types
     let integer : i8 = 9;
     let truth : bool = false;
@@ -46,7 +46,9 @@ fn main() {
     let character : char = 'u'; // can be unicode and must be wrapped in single quotes
 
     println!("integer: {integer} boolean: {truth} float: {float} character: {character}");
+}
 
+fn tuples_basic() {
     let _tup: (i32, f64, u8) = (500, 6.4, 1);
     let (_x,_y,_z) = _tup;
 
@@ -56,8 +58,9 @@ fn main() {
     // we can also index into a tuple using a dot operator
     let _five_hundred = _tup.0;
     let _six_point_four = _tup.1;
+}
 
-
+fn arrays_basic() {
     // arrays are stack allocated
     let calendar : [&str; 12] = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sept", "oct", "nov", "dec"];
 
@@ -75,14 +78,22 @@ fn main() {
     
     //println!("the month is {calendar[9]}"); // we cannot evaluate expressions inside of fmt strings
     println!("the month is {}", calendar[9]);
+}
 
-
-    let udit = something(9);
+fn functions_basic() {
+    let udit = expression_return_example(9);
 
     println!("hullo udit: {udit}");
-    
+}
+
+fn main() {
+    immutability_basic();
+    const_basic();
+    scalar_types_basic();
+    tuples_basic();
+    arrays_basic();
+    functions_basic();
     expression_basic();
-    
 }
 
 /*
